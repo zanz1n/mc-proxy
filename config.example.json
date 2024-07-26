@@ -1,0 +1,6 @@
+{
+    "listen_addr": "0.0.0.0:25565",
+    "proxied_addr": "hypixel.net:25565",
+    "sqlite_file": "proxy.sqlite",
+    "server_status": "Minecraft Server"
+}
