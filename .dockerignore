@@ -1,0 +1,10 @@
+.env
+
+/bin
+/tmp
+
+/target
+Cargo.lock
+
+/data
+/.docker-volumes

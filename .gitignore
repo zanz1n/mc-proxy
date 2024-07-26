@@ -1,0 +1,31 @@
+# Secrets
+.env
+config.json
+
+# IDE files
+.idea/
+
+# Binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Rust build and package lock
+/target
+Cargo.lock
+
+# Temporary data
+/.docker-volumes
+expand.rs
+
+# Perf
+flamegraph.svg
+perf.data
+
+#Sqlite
+*.sqlite
+*.sqlite-journal

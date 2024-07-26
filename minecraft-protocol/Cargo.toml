@@ -1,0 +1,32 @@
+[package]
+name = "minecraft-protocol"
+version = "0.1.0"
+edition = "2021"
+license = "AGPL-3.0"
+
+description = "Crate for reading and writing Minecraft packets"
+authors = ["Izan Rodrigues <izanrodrigues999@gmail.com>"]
+readme = "./README.md"
+
+[features]
+full = ["tokio"]
+tokio = ["dep:tokio"]
+
+[dependencies]
+minecraft-protocol-derive = { path = "../minecraft-protocol-derive" }
+
+tokio = { workspace = true, optional = true }
+
+byteorder = "1"
+linked-hash-map = "0.5"
+bytes.workspace = true
+
+flate2 = "1.0"
+aes = "0.8"
+cfb8 = { version = "0.8", features = ["std"] }
+
+thiserror.workspace = true
+
+serde.workspace = true
+serde_json.workspace = true
+uuid = { workspace = true, features = ["serde"] }
