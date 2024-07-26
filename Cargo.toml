@@ -3,6 +3,8 @@ resolver = "2"
 members = [".", "minecraft-protocol", "minecraft-protocol-derive"]
 
 [workspace.dependencies]
+minecraft-protocol = { path = "./minecraft-protocol" }
+
 tokio = { version = "1", features = [
     "rt-multi-thread",
     "io-util",
@@ -37,4 +39,36 @@ license = "AGPL-3.0"
 
 description = "Minecraft proxy server"
 
+[features]
+full = ["dotenv", "json-log"]
+dotenv = ["dep:dotenvy"]
+json-log = ["tracing-subscriber/json"]
+
 [dependencies]
+minecraft-protocol = { workspace = true, features = ["tokio"] }
+
+tokio.workspace = true
+futures-util = "0.3"
+
+sqlx = { version = "0.7", default-features = false, features = [
+    "runtime-tokio",
+    "tls-rustls",
+    "macros",
+    "chrono",
+    "sqlite",
+    "migrate",
+] }
+
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+uuid.workspace = true
+serde_json.workspace = true
+serde.workspace = true
+chrono = { version = "0.4", features = ["serde"] }
+
+thiserror.workspace = true
+dotenvy = { version = "0.15", optional = true }
+
+[dev-dependencies]
+rand = "0.8"
