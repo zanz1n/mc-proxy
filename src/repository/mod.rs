@@ -14,7 +14,6 @@ pub enum RepositoryError {
     #[error("Sqlx error: {0}")]
     Sqlx(#[from] sqlx::Error),
 
-    #[cfg(any(test, feature = "serde"))]
     #[error("Failed to deserialize value: {0}")]
     Json(#[from] serde_json::Error),
 }
