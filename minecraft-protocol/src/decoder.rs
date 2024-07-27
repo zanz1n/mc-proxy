@@ -57,7 +57,7 @@ macro_rules! read_signed_var_int (
 
                 num_read += 1;
 
-                if num_read > 5 {
+                if num_read > $max_bytes {
                     return Err(DecodeError::VarIntTooLong { max_bytes: $max_bytes });
                 }
                 if read & 0b1000_0000 == 0 {
