@@ -2,8 +2,7 @@ use super::{kv::KeyValueRepository, private::SealedRepository, RepositoryError};
 use chrono::Utc;
 use futures_util::TryStreamExt;
 use sqlx::{
-    database::HasArguments, ColumnIndex, Database, Decode, Encode, Executor, FromRow,
-    IntoArguments, Pool, Row, Type,
+    ColumnIndex, Database, Decode, Encode, Executor, FromRow, IntoArguments, Pool, Row, Type,
 };
 use std::future::Future;
 
@@ -98,7 +97,7 @@ impl<DB, KV> WhitelistRepository for SqlxWhitelistRepository<DB, KV>
 where
     DB: Database,
     KV: KeyValueRepository,
-    for<'a> <DB as HasArguments<'a>>::Arguments: IntoArguments<'a, DB>,
+    for<'a> <DB as sqlx::Database>::Arguments<'a>: IntoArguments<'a, DB>,
     for<'a> &'a Pool<DB>: Executor<'a, Database = DB>,
 
     for<'r> WhitelistRow: FromRow<'r, DB::Row>,

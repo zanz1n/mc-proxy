@@ -2,8 +2,8 @@ use super::RepositoryError;
 use chrono::{DateTime, Utc};
 use futures_util::TryStreamExt;
 use sqlx::{
-    database::HasArguments, prelude::FromRow, ColumnIndex, Database, Decode, Encode, Executor,
-    IntoArguments, Pool, Row, Type,
+    prelude::FromRow, ColumnIndex, Database, Decode, Encode, Executor, IntoArguments, Pool, Row,
+    Type,
 };
 use std::{future::Future, time::Duration};
 
@@ -77,7 +77,7 @@ impl<DB: Database> SqlxUserBansRepository<DB> {
 impl<DB> UserBansRepository for SqlxUserBansRepository<DB>
 where
     DB: Database,
-    for<'a> <DB as HasArguments<'a>>::Arguments: IntoArguments<'a, DB>,
+    for<'a> <DB as sqlx::Database>::Arguments<'a>: IntoArguments<'a, DB>,
     for<'a> &'a Pool<DB>: Executor<'a, Database = DB>,
 
     for<'r> UserBanData: FromRow<'r, DB::Row>,

@@ -2,10 +2,8 @@ use super::RepositoryError;
 use chrono::{DateTime, Utc};
 use futures_util::TryStreamExt;
 use sqlx::{
-    database::{HasArguments, HasValueRef},
-    encode::IsNull,
-    error::BoxDynError,
-    ColumnIndex, Database, Decode, Encode, Executor, FromRow, IntoArguments, Pool, Row, Type,
+    encode::IsNull, error::BoxDynError, ColumnIndex, Database, Decode, Encode, Executor, FromRow,
+    IntoArguments, Pool, Row, Type,
 };
 use std::{
     future::Future,
@@ -59,7 +57,10 @@ impl<'e, DB: Database> Encode<'e, DB> for IpBinaryData
 where
     Vec<u8>: Encode<'e, DB>,
 {
-    fn encode_by_ref(&self, buf: &mut <DB as HasArguments<'e>>::ArgumentBuffer) -> IsNull {
+    fn encode_by_ref(
+        &self,
+        buf: &mut <DB as Database>::ArgumentBuffer<'e>,
+    ) -> Result<IsNull, BoxDynError> {
         let mut vec = Vec::new();
 
         match self.0 {
@@ -81,7 +82,7 @@ impl<'de, DB: Database> Decode<'de, DB> for IpBinaryData
 where
     Vec<u8>: Decode<'de, DB>,
 {
-    fn decode(value: <DB as HasValueRef<'de>>::ValueRef) -> Result<Self, BoxDynError> {
+    fn decode(value: <DB as Database>::ValueRef<'de>) -> Result<Self, BoxDynError> {
         let value = Vec::<u8>::decode(value)?;
 
         let kind = *value.get(0).ok_or("Unexpected value IP size")?;
@@ -165,7 +166,7 @@ impl<DB: Database> SqlxIpBansRepository<DB> {
 impl<DB> IpBansRepository for SqlxIpBansRepository<DB>
 where
     DB: Database,
-    for<'a> <DB as HasArguments<'a>>::Arguments: IntoArguments<'a, DB>,
+    for<'a> <DB as sqlx::Database>::Arguments<'a>: IntoArguments<'a, DB>,
     for<'a> &'a Pool<DB>: Executor<'a, Database = DB>,
 
     for<'r> IpBanRow: FromRow<'r, DB::Row>,

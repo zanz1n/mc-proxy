@@ -1,8 +1,7 @@
 use super::RepositoryError;
 use chrono::Utc;
 use sqlx::{
-    database::HasArguments, ColumnIndex, Database, Decode, Encode, Executor, FromRow,
-    IntoArguments, Pool, Row, Type,
+    ColumnIndex, Database, Decode, Encode, Executor, FromRow, IntoArguments, Pool, Row, Type,
 };
 use std::{future::Future, time::Duration};
 
@@ -93,7 +92,7 @@ impl<DB: Database> SqlxKeyValueRepository<DB> {
 impl<DB> KeyValueRepository for SqlxKeyValueRepository<DB>
 where
     DB: Database,
-    for<'a> <DB as HasArguments<'a>>::Arguments: IntoArguments<'a, DB>,
+    for<'a> <DB as sqlx::Database>::Arguments<'a>: IntoArguments<'a, DB>,
     for<'a> &'a Pool<DB>: Executor<'a, Database = DB>,
 
     for<'r> KeyValueRow: FromRow<'r, <DB as Database>::Row>,
